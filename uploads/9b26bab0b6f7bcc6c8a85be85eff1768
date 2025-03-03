@@ -1,0 +1,3 @@
+name,gender,dateofBirth,photo,fatherName,fatherEmail,fatherPhone,motherPhone,religion,homeAddress,studentCode,campus,class,section,previousSchool,admissionDate,monthlyFee,discountedStudent,transportRoute,createSmsAlert,parentAccount,generateAdmissionFee
+rakesh,male,2025-01-20,,suhail,sarathl@gmail.com,09876543210,22323323232,hind,testing,23486,23455,2025-01-29,23000,no,route2,no,no
+,manoj,male,2025-01-20,,soha,sarathl@gmail.com,09876543210,22323323232,hind,testing,23487,city,23455,2025-01-29,23000,no,route2,no,no
