@@ -2,6 +2,8 @@ const Employee = require("./Employee");
 const EmpAttendance = require("./EmpAttendance");
 const FeeTable = require("./FeeTable");
 const Student = require("./Student");
+const Course = require("./courseModal/Course");
+const Syllabus = require("./courseModal/Syllabus");
 
 const setupAssociations = () => {
   Employee.hasMany(EmpAttendance, {
@@ -24,6 +26,17 @@ const setupAssociations = () => {
     foreignKey: "StudentId",
     as: "feeRecords",
   });
+
+  Course.hasMany(Syllabus, {
+    foreignKey: "courseId",
+    as: "courseSyllabus",
+  });
+
+  Syllabus.belongsTo(Course, {
+    foreignKey: "courseId",
+    as: "course",
+  });
+
 };
 
 module.exports = {
@@ -32,4 +45,6 @@ module.exports = {
   FeeTable,
   Student,
   setupAssociations,
+  Course,
+  Syllabus
 };

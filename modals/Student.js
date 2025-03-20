@@ -12,6 +12,15 @@ const Student = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
+    applicationNumber: {
+      type: DataTypes.STRING(45),
+      allowNull: true,
+      unique: true,
+    },
+    adhaarCard: { type: DataTypes.BIGINT, allowNull: false },
+    admitCard: { type: DataTypes.STRING(2083) },
+    birthCertificate: { type: DataTypes.STRING(2083) },
+    castCertificate: { type: DataTypes.STRING(2083) },
     name: { type: DataTypes.STRING(45), allowNull: false },
     gender: { type: DataTypes.STRING(45), allowNull: false },
     dateofBirth: { type: DataTypes.DATEONLY, allowNull: false },
@@ -19,11 +28,12 @@ const Student = sequelize.define(
     fatherName: { type: DataTypes.STRING(45) },
     fatherEmail: { type: DataTypes.STRING(45) },
     fatherPhone: { type: DataTypes.STRING(45) },
+    whatsappNumber: { type: DataTypes.INTEGER },
+    motherName: { type: DataTypes.STRING(45) },
     motherPhone: { type: DataTypes.STRING(45) },
     religion: { type: DataTypes.STRING(45) },
     homeAddress: { type: DataTypes.STRING(45) },
     studentCode: { type: DataTypes.STRING(45), allowNull: true },
-    campus: { type: DataTypes.STRING(45) },
     class: { type: DataTypes.STRING(45) },
     section: { type: DataTypes.STRING(45) },
     previousSchool: { type: DataTypes.STRING(45) },
@@ -32,8 +42,9 @@ const Student = sequelize.define(
     discountedStudent: { type: DataTypes.STRING(45) },
     transportRoute: { type: DataTypes.STRING(45) },
     createSmsAlert: { type: DataTypes.STRING(45) },
-    parentAccount: { type: DataTypes.STRING(45) },
-    generateAdmissionFee: { type: DataTypes.STRING(45) },
+    
+    parentSignature: { type: DataTypes.STRING(2083) },
+    studentSignature: { type: DataTypes.STRING(2083) },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -56,16 +67,27 @@ Student.associate = (models) => {
     foreignKey: "studentId",
     as: "attendances",
   });
-  Student.belongsTo(models.User, {
-    foreignKey: "fatherEmail", // Foreign key in the Student table
-    targetKey: "email", // Key in the User table
-    as: "user", // Alias for the association
-  });
+  // Student.belongsTo(models.User, {
+  //   foreignKey: "fatherEmail", // Foreign key in the Student table
+  //   targetKey: "email", // Key in the User table
+  //   as: "user", // Alias for the association
+  // });
 };
+Student.beforeCreate(async (student) => {
+  const lastStudent = await Student.findOne({
+    order: [["studentCode", "DESC"]], // Get the last student by studentCode
+  });
 
-Student.beforeCreate(async (studnet) => {
-  const count = await Student.count(); // Count existing employees
-  studnet.studentCode = `${String(count + 1).padStart(4, "0")}`; // Generate ID like '0001'
+  const lastCode = lastStudent ? parseInt(lastStudent.studentCode) : 0;
+  student.studentCode = String(lastCode + 1).padStart(4, "0"); // Ensure 4-digit format
+
+  const lastAppNumber =
+    lastStudent && lastStudent.applicationNumber
+      ? parseInt(lastStudent.applicationNumber.split("-")[1])
+      : 0;
+
+  const newAppNumber = `APP-${String(lastAppNumber + 1).padStart(4, "0")}`;
+  student.applicationNumber = newAppNumber;
 });
 
 module.exports = Student;

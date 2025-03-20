@@ -63,6 +63,9 @@ const fetchTimeTable = require("./routes/TimeTable/fetchTimeTable");
 const updateTimetable = require("./routes/TimeTable/updateTimeTable");
 const feeRoutes = require("./routes/FeeTable/FeesTable");
 const generateMonthlyFees = require("./routes/FeeTable/generateMonthlyFees");
+const sendEmailOTP = require("./routes/otpController/otpController");
+const syllabus = require("./routes/courses/syllubus");
+const course = require("./routes/courses/courseRoute");
 
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
@@ -106,6 +109,9 @@ app.use("/", timeTableEntry);
 app.use("/", fetchTimeTable);
 app.use("/", updateTimetable);
 app.use("/", feeRoutes);
+app.use("/", sendEmailOTP);
+app.use("/", syllabus);
+app.use("/", course);
 
 // Handle socket connections
 io.on("connection", (socket) => {
@@ -142,7 +148,7 @@ const db = {
 };
 // Student.associate(db);
 Attendance.associate(db);
-User.associate(db);
+// User.associate(db);
 Student.associate(db);
 setupAssociations();
 sequelize

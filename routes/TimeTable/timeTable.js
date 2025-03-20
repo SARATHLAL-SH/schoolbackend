@@ -19,9 +19,13 @@ router.post("/add_Division", async (req, res) => {
 });
 
 router.post("/add_Subject", async (req, res) => {
-  const { name } = req.body;
-  const newSubject = await Subject.create({ name });
-  res.json(newSubject);
+  try {
+    const { name } = req.body;
+    const newSubject = await Subject.create({ name });
+    res.json(newSubject);
+  } catch (error) {
+    console.error("Database Insert Error:", error);
+  }
 });
 
 router.post("/add_Timeperiod", async (req, res) => {
@@ -31,7 +35,7 @@ router.post("/add_Timeperiod", async (req, res) => {
 });
 
 // ✅ Get all Classes
-router.get("/get_Classes",  async (req, res) => {
+router.get("/get_Classes", async (req, res) => {
   try {
     const classes = await Class.findAll();
     res.json(classes);
@@ -42,7 +46,7 @@ router.get("/get_Classes",  async (req, res) => {
 });
 
 // ✅ Get all Divisions
-router.get("/get_Divisions",  async (req, res) => {
+router.get("/get_Divisions", async (req, res) => {
   try {
     const divisions = await Division.findAll();
     res.json(divisions);

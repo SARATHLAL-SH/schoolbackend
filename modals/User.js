@@ -75,14 +75,14 @@ const User = sequelize.define(
   }
 );
 // Define the association
-User.associate = (models) => {
-  User.hasMany(models.Student, {
-    foreignKey: "fatherEmail", // Foreign key in the Student table
-    sourceKey: "email", // Key in the User table
-    as: "students", // Alias for the association
-  });
-};
-// Initialize the id_sequence table
+// User.associate = (models) => {
+//   User.hasMany(models.Student, {
+//     foreignKey: "fatherEmail", // Foreign key in the Student table
+//     sourceKey: "email", // Key in the User table
+//     as: "students", // Alias for the association
+//   });
+// };
+// // Initialize the id_sequence table
 (async () => {
   await sequelize.sync();
   const sequence = await IdSequence.findOne();

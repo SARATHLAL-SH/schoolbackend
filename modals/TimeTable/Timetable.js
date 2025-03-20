@@ -29,6 +29,7 @@ const Timetable = sequelize.define("Timetable", {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: { model: Division, key: "id" },
+    field: "divisionId",
   },
   timePeriodId: {
     type: DataTypes.INTEGER,
@@ -42,9 +43,10 @@ const Timetable = sequelize.define("Timetable", {
   },
 });
 
-Timetable.belongsTo(Class);
-Timetable.belongsTo(Division);
-Timetable.belongsTo(TimePeriod);
-Timetable.belongsTo(Subject);
+// Explicitly specify foreign key names in associations
+Timetable.belongsTo(Class, { foreignKey: "classId" });
+Timetable.belongsTo(Division, { foreignKey: "divisionId" });
+Timetable.belongsTo(TimePeriod, { foreignKey: "timePeriodId" });
+Timetable.belongsTo(Subject, { foreignKey: "subjectId" });
 
 module.exports = Timetable;
